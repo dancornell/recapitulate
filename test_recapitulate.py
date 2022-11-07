@@ -6,7 +6,7 @@ class Test(unittest.TestCase):
 
     recapitulate = RecapitulateClass.Recapitulate()
 
-    def test_0_helloworld(self):
+    def test_0_basic_lists(self):
         print('Start test...')
 
         empty_list = []
@@ -16,6 +16,7 @@ class Test(unittest.TestCase):
         float_with_string_list = ['1.1', 'String1', '2.2']
         int_with_string_list = ['1', 'String1', '2']
         int_with_float_list = ['1', '2.2', '3']
+        int_with_blank_list = ['1', '', '3']
 
         ret_val = self.recapitulate.determineDataTypeFromList(None)
         print('None: ' + str(None) + ' ret_val: ' + str(ret_val))
@@ -48,6 +49,11 @@ class Test(unittest.TestCase):
         ret_val = self.recapitulate.determineDataTypeFromList(int_with_float_list)
         print('int_with_float_list: ' + str(int_with_float_list) + ' ret_val: ' + str(ret_val))
         self.assertEqual(ret_val, RecapitulateClass.ColumnDataType.FLOATINGPOINT)
+
+        # TODO - Determine if we like this behavior - where a blank string will cause the data type to be String
+        ret_val = self.recapitulate.determineDataTypeFromList(int_with_blank_list)
+        print('int_with_blank_list: ' + str(int_with_blank_list) + ' ret_val: ' + str(ret_val))
+        self.assertEqual(ret_val, RecapitulateClass.ColumnDataType.STRING)
 
         print('Finished with test')
 
