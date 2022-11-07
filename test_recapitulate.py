@@ -4,10 +4,10 @@ import Recapitulate as RecapitulateClass
 
 class Test(unittest.TestCase):
 
-    recapitulate = RecapitulateClass.Recapitulate()
+    recapitulate = RecapitulateClass.Recapitulate('./data/TestCasesSpreadsheet1.xlsx')
 
     def test_0_basic_lists(self):
-        print('Start test...')
+        print('Start test test_0_basic_lists()')
 
         empty_list = []
         all_string_list = ['String1', 'String2', 'String3']
@@ -56,6 +56,27 @@ class Test(unittest.TestCase):
         self.assertEqual(ret_val, RecapitulateClass.ColumnDataType.STRING)
 
         print('Finished with test')
+
+    def test_1_excel_sheet(self):
+        print('Start test test_1_excel_sheet()')
+
+        ret_val = self.recapitulate.parse_excel_data()
+
+        tab_count = len(ret_val.keys())
+        print('Make sure there are 6 tabs')
+        self.assertEqual(tab_count, 6)
+
+        print('Make sure we got the right tab names')
+        tab_list = sorted(ret_val.keys())
+        self.assertEqual(tab_list[0], 'Basic')
+        self.assertEqual(tab_list[1], 'Sheet \'<,>.')
+        self.assertEqual(tab_list[2], 'Sheet 1234567890 With Number')
+        self.assertEqual(tab_list[3], 'Sheet Name With Spaces')
+        self.assertEqual(tab_list[4], 'Sheet `~!@#$%^&()_-+={}|;"')
+        self.assertEqual(tab_list[5], 'Titles')
+
+        print('Finished with test')
+
 
 if __name__ == '__main__':
     unittest.main()
