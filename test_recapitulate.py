@@ -62,18 +62,23 @@ class Test(unittest.TestCase):
 
         ret_val = self.recapitulate.parse_excel_data()
 
-        tab_count = len(ret_val.keys())
+        tab_count = len(ret_val.data_sets)
         print('Make sure there are 6 tabs')
         self.assertEqual(tab_count, 6)
 
         print('Make sure we got the right tab names')
-        tab_list = sorted(ret_val.keys())
-        self.assertEqual(tab_list[0], 'Basic')
-        self.assertEqual(tab_list[1], 'Sheet \'<,>.')
-        self.assertEqual(tab_list[2], 'Sheet 1234567890 With Number')
-        self.assertEqual(tab_list[3], 'Sheet Name With Spaces')
-        self.assertEqual(tab_list[4], 'Sheet `~!@#$%^&()_-+={}|;"')
-        self.assertEqual(tab_list[5], 'Titles')
+        data_sets = ret_val.data_sets
+        self.assertEqual(data_sets[0].name, 'Basic')
+        self.assertEqual(data_sets[1].name, 'Titles')
+        self.assertEqual(data_sets[2].name, 'Sheet Name With Spaces')
+        self.assertEqual(data_sets[3].name, 'Sheet `~!@#$%^&()_-+={}|;"')
+        self.assertEqual(data_sets[4].name, 'Sheet \'<,>.')
+        self.assertEqual(data_sets[5].name, 'Sheet 1234567890 With Number')
+        
+        
+        
+
+        print('Check the columns in the Basic sheet to make sure the data types are right')
 
         print('Finished with test')
 

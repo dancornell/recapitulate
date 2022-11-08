@@ -9,10 +9,27 @@ class ColumnDataType(OrderedEnum):
     FLOATINGPOINT = 2000
     INTEGER = 3000
 
+class RCColumn:
+    def __init__(self, data_type, item_count, name=''):
+        self.data_type = data_type
+        self.item_count = item_count
+        self.name = name
+
+        logging.DEBUG(f"Created new RCColumn with data_type={data_type}, item_count={item_count}, name={name}")
+
+class RCDataSet:
+    def __init__(self, name, columns):
+        self.name = name
+        self.columns = columns
+
+class RCDataCollection:
+    def __init__(self, data_sets):
+        self.data_sets = data_sets
 
 class Recapitulate:
 
     def __init__(self, excel_file_name):
+        # TODO - Determine if this is where we want to set up logging
         logging.basicConfig(level=logging.DEBUG)
         self.excel_file_name = excel_file_name
         logging.debug('excel_file_name: ' + self.excel_file_name)
@@ -51,7 +68,9 @@ class Recapitulate:
     def parse_excel_data(self):
         logging.debug('Starting parse_excel_data()')
 
-        ret_val = { }
+        ret_val = None
+
+        data_sets = []
 
         xl = pd.ExcelFile(self.excel_file_name)
         sheet_names = xl.sheet_names
@@ -59,7 +78,10 @@ class Recapitulate:
             logging.debug('Working with sheet: ' + sheet)
             my_sheet = pd.read_excel(self.excel_file_name, sheet_name=sheet, header=0)
             
-            ret_val[sheet] = 'PLACEHOLDER'
+            my_data_set = RCDataSet(name=sheet, columns=[])
+            data_sets.append(my_data_set)
+
+        ret_val = RCDataCollection(data_sets)
 
         logging.debug('Finished parse_excel_data()')
 
